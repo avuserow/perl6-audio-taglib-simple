@@ -1,0 +1,3 @@
+- APIs to write metadata to files
+- API to tell TagLib the file type of a given file (requires figuring out how
+  to include the enum)
