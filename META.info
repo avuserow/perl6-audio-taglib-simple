@@ -4,5 +4,5 @@
 	"description" : "Read ID3 and other audio metadata with TagLib",
 	"author" : "Adrian Kreher",
 	"depends" : [ "NativeCall" ],
-	"source-url" : "git://github.com/avuserow/perl6-audio-taglib-simple"
+	"source-url" : "git://github.com/avuserow/perl6-audio-taglib-simple.git"
 }

@@ -84,7 +84,6 @@ class Audio::Taglib::Simple {
 		return taglib_audioproperties_channels($!taglib-audio);
 	}
 
-
 	# Routines we use automatically for the actual API calls
 	sub taglib_file_new(Str) returns OpaquePointer is native('libtag_c') {...};
 
@@ -108,3 +107,6 @@ class Audio::Taglib::Simple {
 	sub taglib_audioproperties_samplerate(OpaquePointer) returns Int is native('libtag_c') {...};
 	sub taglib_audioproperties_channels(OpaquePointer) returns Int is native('libtag_c') {...};
 }
+
+
+# vim: ft=perl6
