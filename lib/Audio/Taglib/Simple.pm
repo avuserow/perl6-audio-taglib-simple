@@ -66,37 +66,37 @@ class Audio::Taglib::Simple {
 		$!channels = taglib_audioproperties_channels($!taglib-audio);
 	}
 
-	method set_title(Str $in) {
+	method set-title(Str $in) {
 		taglib_tag_set_title($!taglib-tag, $in);
 		$!title = $in;
 	}
 
-	method set_artist(Str $in) {
+	method set-artist(Str $in) {
 		taglib_tag_set_artist($!taglib-tag, $in);
 		$!artist = $in;
 	}
 
-	method set_album(Str $in) {
+	method set-album(Str $in) {
 		taglib_tag_set_album($!taglib-tag, $in);
 		$!album = $in;
 	}
 
-	method set_comment(Str $in) {
+	method set-comment(Str $in) {
 		taglib_tag_set_comment($!taglib-tag, $in);
 		$!comment = $in;
 	}
 
-	method set_genre(Str $in) {
+	method set-genre(Str $in) {
 		taglib_tag_set_genre($!taglib-tag, $in);
 		$!genre = $in;
 	}
 
-	method set_year(Int $in) {
+	method set-year(Int $in) {
 		taglib_tag_set_year($!taglib-tag, $in);
 		$!year = $in;
 	}
 
-	method set_track(Int $in) {
+	method set-track(Int $in) {
 		taglib_tag_set_track($!taglib-tag, $in);
 		$!track = $in;
 	}

@@ -20,7 +20,7 @@ my %edits = (
 );
 
 for %edits.kv -> $key, $val {
-	$tl."set_$key"($val);
+	$tl."set-$key"($val);
 	is $tl."$key"(), $val, "$key was updated in memory";
 }
 
