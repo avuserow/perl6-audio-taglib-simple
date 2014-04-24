@@ -1,12 +1,15 @@
 # NAME
 
-Audio::Taglib::Simple - Read ID3 and other audio metadata with TagLib
+Audio::Taglib::Simple - Read, write ID3 and other audio metadata with TagLib
 
 # SYNOPSIS
 
 ```perl6
 my $taglib = Audio::Taglib::Simple.new("awesome.mp3");
 say "artist: ", $taglib.artist;
+
+$taglib.set-artist("Awesome Band");
+$taglib.save()
 ```
 
 See also examples/taglib.p6
@@ -53,6 +56,11 @@ Readonly accessor to the file variable passed in.
 Returns the year associated with the song as an integer (e.g. 2004) or 0 if not
 present.
 
+## track
+
+Returns the track number of this song as an integer (e.g. 12) or 0 if not
+present.
+
 ## length
 
 Returns the length of the file as a Duration. TagLib provides it as an integer.
@@ -69,12 +77,31 @@ Returns the sample rate of the file as an Int in Hz. Example: 44100.
 
 Returns the number of channels present in the file as an Int. Example: 2.
 
+## set-artist(Str)
+
+## set-album(Str)
+
+## set-title(Str)
+
+## set-comment(Str)
+
+## set-genre(Str)
+
+## set-year(Int)
+
+## save() returns Bool
+
+Call save after one or more set-foo mutators to write out the changes.
+
 # CAVEATS
 
 - TagLib prints some warnings to STDERR directly.
 - All fields are read from the metadata, and corrupted files can often have
   incorrect values for length. TagLib does not actually parse the music stream
   to find this out.
+- Tags are read at object initialization time. This means that if some other
+  process modifies the tags on the music file, you won't see changes unless you
+  create a new object.
 
 # TODO
 
