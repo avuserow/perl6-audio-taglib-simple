@@ -1,8 +1,11 @@
 {
 	"name" : "Audio::Taglib::Simple",
-	"version" : "0.0.1",
+	"version" : "0.0.2",
 	"description" : "Read ID3 and other audio metadata with TagLib",
 	"author" : "Adrian Kreher",
+	"provides": {
+		"Audio::Taglib::Simple" : "lib/Audio/Taglib/Simple.pm"
+	},
 	"depends" : [ "NativeCall" ],
 	"source-url" : "git://github.com/avuserow/perl6-audio-taglib-simple.git"
 }
