@@ -8,80 +8,83 @@ class Audio::Taglib::Simple {
 	has $!taglib-tag;
 	has $!taglib-audio;
 
+	has Str $.title is readonly;
+	has Str $.artist is readonly;
+	has Str $.album is readonly;
+	has Str $.comment is readonly;
+	has Str $.genre is readonly;
+	has Int $.year is readonly;
+	has Int $.track is readonly;
+	has Duration $.length is readonly;
+	has Int $.bitrate is readonly;
+	has Int $.samplerate is readonly;
+	has Int $.channels is readonly;
+
 	#= Open the provided file to read its tags.
 	method new(Str $file) {
 		die "File does not exist" unless $file.path ~~ :e;
-
-		my $taglib-file = taglib_file_new($file);
-		die "Invalid audio file" unless $taglib-file;
-		self.bless(:$file, :$taglib-file);
+		self.bless(:$file);
 	}
 
-	method !setup-file-tag() {
-		unless $!taglib-tag {
-			$!taglib-tag = taglib_file_tag($.taglib-file);
-		}
+	submethod BUILD(:$file) {
+		$!taglib-file = taglib_file_new($file);
+		die "Invalid audio file" unless $!taglib-file;
+
+		# set up stuff that taglib cares about
+		$!taglib-tag = taglib_file_tag($!taglib-file);
+		$!taglib-audio = taglib_file_audioproperties($!taglib-file);
+
+		# load tags
+		$!title = taglib_tag_title($!taglib-tag);
+		$!artist = taglib_tag_artist($!taglib-tag);
+		$!album = taglib_tag_album($!taglib-tag);
+		$!comment = taglib_tag_comment($!taglib-tag);
+		$!genre = taglib_tag_genre($!taglib-tag);
+		$!year = taglib_tag_year($!taglib-tag);
+		$!track = taglib_tag_track($!taglib-tag);
+		$!length = Duration.new(taglib_audioproperties_length($!taglib-audio));
+		$!bitrate = taglib_audioproperties_bitrate($!taglib-audio);
+		$!samplerate = taglib_audioproperties_samplerate($!taglib-audio);
+		$!channels = taglib_audioproperties_channels($!taglib-audio);
 	}
 
-	method title() returns Str {
-		self!setup-file-tag;
-		return taglib_tag_title($!taglib-tag);
+	method set_title(Str $in) {
+		taglib_tag_set_title($!taglib-tag, $in);
+		$!title = $in;
 	}
 
-	method artist() returns Str {
-		self!setup-file-tag;
-		return taglib_tag_artist($!taglib-tag);
+	method set_artist(Str $in) {
+		taglib_tag_set_artist($!taglib-tag, $in);
+		$!artist = $in;
 	}
 
-	method album() returns Str {
-		self!setup-file-tag;
-		return taglib_tag_album($!taglib-tag);
+	method set_album(Str $in) {
+		taglib_tag_set_album($!taglib-tag, $in);
+		$!album = $in;
 	}
 
-	method comment() returns Str {
-		self!setup-file-tag;
-		return taglib_tag_comment($!taglib-tag);
+	method set_comment(Str $in) {
+		taglib_tag_set_comment($!taglib-tag, $in);
+		$!comment = $in;
 	}
 
-	method genre() returns Str {
-		self!setup-file-tag;
-		return taglib_tag_genre($!taglib-tag);
+	method set_genre(Str $in) {
+		taglib_tag_set_genre($!taglib-tag, $in);
+		$!genre = $in;
 	}
 
-	method year() returns Int {
-		self!setup-file-tag;
-		return taglib_tag_year($!taglib-tag);
+	method set_year(Int $in) {
+		taglib_tag_set_year($!taglib-tag, $in);
+		$!year = $in;
 	}
 
-	method track() returns Int {
-		self!setup-file-tag;
-		return taglib_tag_track($!taglib-tag);
+	method set_track(Int $in) {
+		taglib_tag_set_track($!taglib-tag, $in);
+		$!track = $in;
 	}
 
-	method !setup-file-audio() {
-		unless $!taglib-audio {
-			$!taglib-audio = taglib_file_audioproperties($.taglib-file);
-		}
-	}
-
-	method length() returns Duration {
-		self!setup-file-audio;
-		return Duration.new(taglib_audioproperties_length($!taglib-audio));
-	}
-
-	method bitrate() returns Int {
-		self!setup-file-audio;
-		return taglib_audioproperties_bitrate($!taglib-audio);
-	}
-
-	method samplerate() returns Int {
-		self!setup-file-audio;
-		return taglib_audioproperties_samplerate($!taglib-audio);
-	}
-
-	method channels() returns Int {
-		self!setup-file-audio;
-		return taglib_audioproperties_channels($!taglib-audio);
+	method save() returns Bool {
+		return Bool(taglib_file_save($!taglib-file));
 	}
 
 	# Routines we use automatically for the actual API calls
@@ -100,6 +103,16 @@ class Audio::Taglib::Simple {
 	sub taglib_tag_genre(OpaquePointer) returns Str is native('libtag_c') {...};
 	sub taglib_tag_year(OpaquePointer) returns Int is native('libtag_c') {...};
 	sub taglib_tag_track(OpaquePointer) returns Int is native('libtag_c') {...};
+
+	# Tag manipulation APIs
+	sub taglib_file_save(OpaquePointer) returns Int is native('libtag_c') {...};
+	sub taglib_tag_set_title(OpaquePointer, Str) is native('libtag_c') {...};
+	sub taglib_tag_set_artist(OpaquePointer, Str) is native('libtag_c') {...};
+	sub taglib_tag_set_album(OpaquePointer, Str) is native('libtag_c') {...};
+	sub taglib_tag_set_comment(OpaquePointer, Str) is native('libtag_c') {...};
+	sub taglib_tag_set_genre(OpaquePointer, Str) is native('libtag_c') {...};
+	sub taglib_tag_set_year(OpaquePointer, Int) is native('libtag_c') {...};
+	sub taglib_tag_set_track(OpaquePointer, Int) is native('libtag_c') {...};
 
 	# Audio Properties APIs
 	sub taglib_audioproperties_length(OpaquePointer) returns Int is native('libtag_c') {...};
