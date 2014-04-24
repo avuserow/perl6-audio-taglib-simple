@@ -2,6 +2,14 @@ use v6;
 
 use NativeCall;
 
+my class X::InvalidAudioFile is Exception {
+	has $.file;
+	has $.text;
+	method message() {
+		"Failed to parse file $.file: $.text"
+	}
+}
+
 class Audio::Taglib::Simple {
 	has $.file is readonly;
 	has $.taglib-file is readonly;
@@ -22,13 +30,23 @@ class Audio::Taglib::Simple {
 
 	#= Open the provided file to read its tags.
 	method new(Str $file) {
-		die "File does not exist" unless $file.path ~~ :e;
+		unless $file.path ~~ :e {
+			X::InvalidAudioFile.new(
+				file => $file,
+				text => 'File does not exist',
+			).throw;
+		}
 		self.bless(:$file);
 	}
 
 	submethod BUILD(:$file) {
 		$!taglib-file = taglib_file_new($file);
-		die "Invalid audio file" unless $!taglib-file;
+		unless $!taglib-file {
+			X::InvalidAudioFile.new(
+				file => $file,
+				text => 'File not recognized or parseable by TagLib',
+			).throw;
+		}
 
 		# set up stuff that taglib cares about
 		$!taglib-tag = taglib_file_tag($!taglib-file);
