@@ -1,9 +1,9 @@
 {
 	"name" : "Audio::Taglib::Simple",
-	"version" : "0.0.3",
-	"description" : "Read ID3 and other audio metadata with TagLib",
+	"version" : "0.0.4",
+	"description" : "Read, write ID3 and other audio metadata with TagLib",
 	"author" : "Adrian Kreher",
-	"provides": {
+	"provides" : {
 		"Audio::Taglib::Simple" : "lib/Audio/Taglib/Simple.pm"
 	},
 	"depends" : [ "NativeCall" ],
