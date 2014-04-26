@@ -16,7 +16,7 @@ class Audio::Taglib::Simple {
 	has $!taglib-tag;
 	has $!taglib-audio;
 
-	has Str $.title is readonly;
+	has Str $!title;
 	has Str $.artist is readonly;
 	has Str $.album is readonly;
 	has Str $.comment is readonly;
@@ -66,39 +66,88 @@ class Audio::Taglib::Simple {
 		$!channels = taglib_audioproperties_channels($!taglib-audio);
 	}
 
-	method set-title(Str $in) {
-		taglib_tag_set_title($!taglib-tag, $in);
-		$!title = $in;
+	method title() {
+		return Proxy.new(
+			FETCH => sub ($) {
+				$!title;
+			},
+			STORE => sub ($, Str $in) {
+				taglib_tag_set_title($!taglib-tag, $in);
+				$!title = $in;
+			},
+		);
 	}
 
-	method set-artist(Str $in) {
-		taglib_tag_set_artist($!taglib-tag, $in);
-		$!artist = $in;
+	method artist() {
+		return Proxy.new(
+			FETCH => sub ($) {
+				$!artist;
+			},
+			STORE => sub ($, Str $in) {
+				taglib_tag_set_artist($!taglib-tag, $in);
+				$!artist = $in;
+			},
+		);
 	}
 
-	method set-album(Str $in) {
-		taglib_tag_set_album($!taglib-tag, $in);
-		$!album = $in;
+	method album() {
+		return Proxy.new(
+			FETCH => sub ($) {
+				$!album;
+			},
+			STORE => sub ($, Str $in) {
+				taglib_tag_set_album($!taglib-tag, $in);
+				$!album = $in;
+			},
+		);
 	}
 
-	method set-comment(Str $in) {
-		taglib_tag_set_comment($!taglib-tag, $in);
-		$!comment = $in;
+	method comment() {
+		return Proxy.new(
+			FETCH => sub ($) {
+				$!comment;
+			},
+			STORE => sub ($, Str $in) {
+				taglib_tag_set_comment($!taglib-tag, $in);
+				$!comment = $in;
+			},
+		);
 	}
 
-	method set-genre(Str $in) {
-		taglib_tag_set_genre($!taglib-tag, $in);
-		$!genre = $in;
+	method genre() {
+		return Proxy.new(
+			FETCH => sub ($) {
+				$!genre;
+			},
+			STORE => sub ($, Str $in) {
+				taglib_tag_set_genre($!taglib-tag, $in);
+				$!genre = $in;
+			},
+		);
 	}
 
-	method set-year(Int $in) {
-		taglib_tag_set_year($!taglib-tag, $in);
-		$!year = $in;
+	method year() {
+		return Proxy.new(
+			FETCH => sub ($) {
+				$!year;
+			},
+			STORE => sub ($, Int $in) {
+				taglib_tag_set_year($!taglib-tag, $in);
+				$!year = $in;
+			},
+		);
 	}
 
-	method set-track(Int $in) {
-		taglib_tag_set_track($!taglib-tag, $in);
-		$!track = $in;
+	method track() {
+		return Proxy.new(
+			FETCH => sub ($) {
+				$!track;
+			},
+			STORE => sub ($, Int $in) {
+				taglib_tag_set_track($!taglib-tag, $in);
+				$!track = $in;
+			},
+		);
 	}
 
 	method save() returns Bool {
