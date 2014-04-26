@@ -1,6 +1,6 @@
 {
 	"name" : "Audio::Taglib::Simple",
-	"version" : "0.0.4",
+	"version" : "0.0.5",
 	"description" : "Read, write ID3 and other audio metadata with TagLib",
 	"author" : "Adrian Kreher",
 	"provides" : {

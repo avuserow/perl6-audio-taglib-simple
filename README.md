@@ -40,6 +40,10 @@ All of the API methods are read only. Modifying a file is not yet supported.
 Prepares to read the provided file. Dies if the file does not exist or if
 TagLib cannot parse it. TagLib attempts to guess the file type here.
 
+## free
+
+Frees the internal data used by TagLib.
+
 ## file
 
 Readonly accessor to the file variable passed in.
@@ -115,6 +119,8 @@ The specific error text.
 
 # CAVEATS
 
+- TagLib will start claiming some files are not valid after a
+  certain amount of objects are creating them without freeing them.
 - TagLib prints some warnings to STDERR directly.
 - All fields are read from the metadata, and corrupted files can often have
   incorrect values for length. TagLib does not actually parse the music stream

@@ -40,11 +40,19 @@ class Audio::Taglib::Simple {
 	}
 
 	submethod BUILD(:$file) {
+		$!file = $file;
 		$!taglib-file = taglib_file_new($file);
 		unless $!taglib-file {
 			X::InvalidAudioFile.new(
 				file => $file,
 				text => 'File not recognized or parseable by TagLib',
+			).throw;
+		}
+
+		unless taglib_file_is_valid($!taglib-file) {
+			X::InvalidAudioFile.new(
+				file => $file,
+				text => 'TagLib reports file is invalid',
 			).throw;
 		}
 
@@ -154,8 +162,15 @@ class Audio::Taglib::Simple {
 		return Bool(taglib_file_save($!taglib-file));
 	}
 
+	method free() {
+		taglib_file_free($!taglib-file);
+	}
+
+
 	# Routines we use automatically for the actual API calls
 	sub taglib_file_new(Str) returns OpaquePointer is native('libtag_c') {...};
+	sub taglib_file_is_valid(OpaquePointer) returns Int is native('libtag_c') {...};
+	sub taglib_file_free(OpaquePointer) is native('libtag_c') {...};
 
 	# XXX use this someday when we can represent the enum of the types
 	#sub taglib_file_new_type(Str, Enum) returns OpaquePointer is native('libtag_c') {...};

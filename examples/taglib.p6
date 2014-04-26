@@ -26,6 +26,7 @@ multi MAIN(*@files) {
 				say "$_: ", $tl."$_"();
 			}
 			$music++;
+			$tl.free();
 		}
 		say;
 	}

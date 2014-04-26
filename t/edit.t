@@ -32,4 +32,6 @@ for %edits.kv -> $key, $val {
 	is $tl."$key"(), $val, "$key was updated on disk";
 }
 
+$tl.free();
+
 done;
