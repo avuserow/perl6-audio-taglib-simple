@@ -6,9 +6,12 @@ Audio::Taglib::Simple - Read, write ID3 and other audio metadata with TagLib
 
 ```perl6
 my $taglib = Audio::Taglib::Simple.new("awesome.mp3");
+
+# read a tag
 say "artist: ", $taglib.artist;
 
-$taglib.set-artist("Awesome Band");
+# edit a tag
+$taglib.artist = "Awesome Band";
 $taglib.save()
 ```
 
@@ -41,57 +44,74 @@ TagLib cannot parse it. TagLib attempts to guess the file type here.
 
 Readonly accessor to the file variable passed in.
 
-## artist
+## artist() returns Str
 
-## album
+Returns the artist of the song.
 
-## title
+## album() returns Str
 
-## comment
+Returns the name of the album associated with the song.
 
-## genre
+## title() returns Str
 
-## year
+Returns the title of the song.
+
+## comment() returns Str
+
+A generic comment field.
+
+## genre() returns Str
+
+A string describing the genre.
+
+## year() returns Int
 
 Returns the year associated with the song as an integer (e.g. 2004) or 0 if not
 present.
 
-## track
+## track() returns Int
 
 Returns the track number of this song as an integer (e.g. 12) or 0 if not
 present.
 
-## length
-
-Returns the length of the file as a Duration. TagLib provides it as an integer.
-
-## bitrate
-
-Returns the bit rate of the file as an Int in kb/s. Example: 128.
-
-## samplerate
-
-Returns the sample rate of the file as an Int in Hz. Example: 44100.
-
-## channels
-
-Returns the number of channels present in the file as an Int. Example: 2.
-
-## set-artist(Str)
-
-## set-album(Str)
-
-## set-title(Str)
-
-## set-comment(Str)
-
-## set-genre(Str)
-
-## set-year(Int)
-
 ## save() returns Bool
 
-Call save after one or more set-foo mutators to write out the changes.
+Call save after assigning to one or more tag attributes (listed above) to write
+out the changes.
+
+## length() returns Duration
+
+Returns the length of the file as a Duration. TagLib provides it as an integer.
+Not editable.
+
+## bitrate() returns Int
+
+Returns the bit rate of the file as an Int in kb/s. Example: 128. Not editable.
+
+## samplerate() returns Int
+
+Returns the sample rate of the file as an Int in Hz. Example: 44100. Not
+editable.
+
+## channels() returns Int
+
+Returns the number of channels present in the file as an Int. Example: 2. Not
+editable.
+
+# EXCEPTIONS
+
+## X::InvalidAudioFile
+
+The constructor may raise exceptions if the file does not exist or does not
+appear to be audio that TagLib can parse.
+
+### file
+
+The file that is invalid.
+
+### text
+
+The specific error text.
 
 # CAVEATS
 
