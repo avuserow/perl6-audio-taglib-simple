@@ -28,7 +28,7 @@ multi MAIN(*@files) {
 			$music++;
 			$tl.free();
 		}
-		say;
+		say '';
 	}
 
 	say "Took ", (now - BEGIN now), " seconds";

@@ -10,6 +10,8 @@ my class X::InvalidAudioFile is Exception {
 	}
 }
 
+my constant taglib = 'libtag_c';
+
 class Audio::Taglib::Simple {
 	has $.file is readonly;
 	has $.taglib-file is readonly;
@@ -29,8 +31,13 @@ class Audio::Taglib::Simple {
 	has Int $.channels is readonly;
 
 	#= Open the provided file to read its tags.
-	method new(Str $file) {
-		unless $file.path ~~ :e {
+	multi method new(Str $file) {
+		self.new(file => $file.IO);
+	}
+
+	#= Open the provided file to read its tags.
+	multi method new(IO $file) {
+		unless $file ~~ :e {
 			X::InvalidAudioFile.new(
 				file => $file,
 				text => 'File does not exist',
@@ -40,8 +47,8 @@ class Audio::Taglib::Simple {
 	}
 
 	submethod BUILD(:$file) {
-		$!file = $file;
-		$!taglib-file = taglib_file_new($file);
+		$!file = $file.path;
+		$!taglib-file = taglib_file_new($!file);
 		unless $!taglib-file {
 			X::InvalidAudioFile.new(
 				file => $file,
@@ -168,39 +175,39 @@ class Audio::Taglib::Simple {
 
 
 	# Routines we use automatically for the actual API calls
-	sub taglib_file_new(Str) returns OpaquePointer is native('libtag_c') {...};
-	sub taglib_file_is_valid(OpaquePointer) returns Int is native('libtag_c') {...};
-	sub taglib_file_free(OpaquePointer) is native('libtag_c') {...};
+	sub taglib_file_new(Str) returns OpaquePointer is native(taglib) {...};
+	sub taglib_file_is_valid(OpaquePointer) returns Int is native(taglib) {...};
+	sub taglib_file_free(OpaquePointer) is native(taglib) {...};
 
 	# XXX use this someday when we can represent the enum of the types
-	#sub taglib_file_new_type(Str, Enum) returns OpaquePointer is native('libtag_c') {...};
-	sub taglib_file_tag(OpaquePointer) returns OpaquePointer is native('libtag_c') {...};
-	sub taglib_file_audioproperties(OpaquePointer) returns OpaquePointer is native('libtag_c') {...};
+	#sub taglib_file_new_type(Str, Enum) returns OpaquePointer is native(taglib) {...};
+	sub taglib_file_tag(OpaquePointer) returns OpaquePointer is native(taglib) {...};
+	sub taglib_file_audioproperties(OpaquePointer) returns OpaquePointer is native(taglib) {...};
 
 	# Tag APIs
-	sub taglib_tag_title(OpaquePointer) returns Str is native('libtag_c') {...};
-	sub taglib_tag_artist(OpaquePointer) returns Str is native('libtag_c') {...};
-	sub taglib_tag_album(OpaquePointer) returns Str is native('libtag_c') {...};
-	sub taglib_tag_comment(OpaquePointer) returns Str is native('libtag_c') {...};
-	sub taglib_tag_genre(OpaquePointer) returns Str is native('libtag_c') {...};
-	sub taglib_tag_year(OpaquePointer) returns Int is native('libtag_c') {...};
-	sub taglib_tag_track(OpaquePointer) returns Int is native('libtag_c') {...};
+	sub taglib_tag_title(OpaquePointer) returns Str is native(taglib) {...};
+	sub taglib_tag_artist(OpaquePointer) returns Str is native(taglib) {...};
+	sub taglib_tag_album(OpaquePointer) returns Str is native(taglib) {...};
+	sub taglib_tag_comment(OpaquePointer) returns Str is native(taglib) {...};
+	sub taglib_tag_genre(OpaquePointer) returns Str is native(taglib) {...};
+	sub taglib_tag_year(OpaquePointer) returns Int is native(taglib) {...};
+	sub taglib_tag_track(OpaquePointer) returns Int is native(taglib) {...};
 
 	# Tag manipulation APIs
-	sub taglib_file_save(OpaquePointer) returns Int is native('libtag_c') {...};
-	sub taglib_tag_set_title(OpaquePointer, Str) is native('libtag_c') {...};
-	sub taglib_tag_set_artist(OpaquePointer, Str) is native('libtag_c') {...};
-	sub taglib_tag_set_album(OpaquePointer, Str) is native('libtag_c') {...};
-	sub taglib_tag_set_comment(OpaquePointer, Str) is native('libtag_c') {...};
-	sub taglib_tag_set_genre(OpaquePointer, Str) is native('libtag_c') {...};
-	sub taglib_tag_set_year(OpaquePointer, Int) is native('libtag_c') {...};
-	sub taglib_tag_set_track(OpaquePointer, Int) is native('libtag_c') {...};
+	sub taglib_file_save(OpaquePointer) returns Int is native(taglib) {...};
+	sub taglib_tag_set_title(OpaquePointer, Str) is native(taglib) {...};
+	sub taglib_tag_set_artist(OpaquePointer, Str) is native(taglib) {...};
+	sub taglib_tag_set_album(OpaquePointer, Str) is native(taglib) {...};
+	sub taglib_tag_set_comment(OpaquePointer, Str) is native(taglib) {...};
+	sub taglib_tag_set_genre(OpaquePointer, Str) is native(taglib) {...};
+	sub taglib_tag_set_year(OpaquePointer, Int) is native(taglib) {...};
+	sub taglib_tag_set_track(OpaquePointer, Int) is native(taglib) {...};
 
 	# Audio Properties APIs
-	sub taglib_audioproperties_length(OpaquePointer) returns Int is native('libtag_c') {...};
-	sub taglib_audioproperties_bitrate(OpaquePointer) returns Int is native('libtag_c') {...};
-	sub taglib_audioproperties_samplerate(OpaquePointer) returns Int is native('libtag_c') {...};
-	sub taglib_audioproperties_channels(OpaquePointer) returns Int is native('libtag_c') {...};
+	sub taglib_audioproperties_length(OpaquePointer) returns Int is native(taglib) {...};
+	sub taglib_audioproperties_bitrate(OpaquePointer) returns Int is native(taglib) {...};
+	sub taglib_audioproperties_samplerate(OpaquePointer) returns Int is native(taglib) {...};
+	sub taglib_audioproperties_channels(OpaquePointer) returns Int is native(taglib) {...};
 }
 
 
