@@ -12,7 +12,10 @@ say "artist: ", $taglib.artist;
 
 # edit a tag
 $taglib.artist = "Awesome Band";
-$taglib.save()
+$taglib.save;
+
+# free memory when you're done
+$taglib.free;
 ```
 
 See also examples/taglib.p6
@@ -35,7 +38,7 @@ All of the API methods are read only. Modifying a file is not yet supported.
 
 # METHODS
 
-## new($file)
+## new(Str|IO $file)
 
 Prepares to read the provided file. Dies if the file does not exist or if
 TagLib cannot parse it. TagLib attempts to guess the file type here.
@@ -44,7 +47,7 @@ TagLib cannot parse it. TagLib attempts to guess the file type here.
 
 Frees the internal data used by TagLib.
 
-## file
+## file returns IO
 
 Readonly accessor to the file variable passed in.
 
@@ -128,6 +131,11 @@ The specific error text.
 - Tags are read at object initialization time. This means that if some other
   process modifies the tags on the music file, you won't see changes unless you
   create a new object.
+
+# REQUIREMENTS
+
+- Rakudo Perl 6 2014.11 or above. Tested primarily on MoarVM.
+- NativeCall
 
 # TODO
 
