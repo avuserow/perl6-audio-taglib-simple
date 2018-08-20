@@ -81,8 +81,8 @@ class Audio::Taglib::Simple {
 		$!channels = taglib_audioproperties_channels($!taglib-audio);
 	}
 
-	method title() {
-		return Proxy.new(
+	method title() is rw {
+		Proxy.new(
 			FETCH => sub ($) {
 				$!title;
 			},
@@ -93,8 +93,8 @@ class Audio::Taglib::Simple {
 		);
 	}
 
-	method artist() {
-		return Proxy.new(
+	method artist() is rw {
+		Proxy.new(
 			FETCH => sub ($) {
 				$!artist;
 			},
@@ -105,8 +105,8 @@ class Audio::Taglib::Simple {
 		);
 	}
 
-	method album() {
-		return Proxy.new(
+	method album() is rw {
+		Proxy.new(
 			FETCH => sub ($) {
 				$!album;
 			},
@@ -117,8 +117,8 @@ class Audio::Taglib::Simple {
 		);
 	}
 
-	method comment() {
-		return Proxy.new(
+	method comment() is rw {
+		Proxy.new(
 			FETCH => sub ($) {
 				$!comment;
 			},
@@ -129,8 +129,8 @@ class Audio::Taglib::Simple {
 		);
 	}
 
-	method genre() {
-		return Proxy.new(
+	method genre() is rw {
+		Proxy.new(
 			FETCH => sub ($) {
 				$!genre;
 			},
@@ -141,8 +141,8 @@ class Audio::Taglib::Simple {
 		);
 	}
 
-	method year() {
-		return Proxy.new(
+	method year() is rw {
+		Proxy.new(
 			FETCH => sub ($) {
 				$!year;
 			},
@@ -153,8 +153,8 @@ class Audio::Taglib::Simple {
 		);
 	}
 
-	method track() {
-		return Proxy.new(
+	method track() is rw {
+		Proxy.new(
 			FETCH => sub ($) {
 				$!track;
 			},
