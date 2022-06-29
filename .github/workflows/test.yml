@@ -1,0 +1,45 @@
+name: test
+
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+  raku-macOS:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Raku/setup-raku@v1
+        with:
+          raku-version: latest
+      - name: Install TagLib
+        run: brew install taglib
+      - name: Install Dependencies
+        run: zef install --/test --test-depends --deps-only .
+      - name: Install App::Prove6
+        run: zef install --/test App::Prove6
+      - name: Run Tests
+        run: prove6 -l t
+      - name: Install Module
+        run: zef install .
+  raku-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Raku/setup-raku@v1
+        with:
+          raku-version: latest
+      - name: Install TagLib
+        run: sudo apt-get update && sudo apt-get install -y libtagc0-dev
+      - name: Install Dependencies
+        run: zef install --/test --test-depends --deps-only .
+      - name: Install App::Prove6
+        run: zef install --/test App::Prove6
+      - name: Run Tests
+        run: prove6 -l t
+      - name: Install Module
+        run: zef install .

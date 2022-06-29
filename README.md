@@ -26,6 +26,9 @@ This module uses NativeCall to provide bindings to TagLib's C API. The C API is
 the "simple" API, which only provides commonly used fields that are abstracted
 over all file types.
 
+If you are interested in the non-abstract API, check out the
+[Audio::TagLib](https://github.com/avuserow/raku-audio-taglib) module.
+
 TagLib supports many audio and tag formats. Audio formats include MP3, MPC,
 FLAC, MP4, ASF, AIFF, WAV, TrueAudio, WavPack, Ogg FLAC, Ogg Vorbis, Speex and
 Opus file formats. Tag formats include ID3v1, ID3v2, APE, FLAC, Xiph,

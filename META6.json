@@ -2,13 +2,15 @@
 	"perl" : "6.*",
 	"name" : "Audio::Taglib::Simple",
 	"license" : "MIT",
-	"version" : "0.0.8",
+	"version" : "0.0.9",
 	"description" : "Read, write ID3 and other audio metadata with TagLib",
 	"author" : "Adrian Kreher",
 	"provides" : {
 		"Audio::Taglib::Simple" : "lib/Audio/Taglib/Simple.pm"
 	},
-	"depends" : [],
+	"depends" : [
+		"tag_c:from<native>"
+	],
 	"tags" : [
 		"audio",
 		"music",
